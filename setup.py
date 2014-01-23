@@ -17,9 +17,8 @@ setup(
   version='1.0',
 
   description='Python wrapper for SpookyHash V2',
-  author='',
-  author_email='',
-  url='',
+  author='Sergey Grankin',
+  url='https://github.com/sgrankin/spooky_hash',
 
   setup_requires=['nose>=1.0'],
   cmdclass={'build_ext': build_ext},
