@@ -21,7 +21,7 @@ setup(
   url='https://github.com/sgrankin/spooky_hash',
 
   setup_requires=['nose>=1.0'],
-  cmdclass={'build_ext': build_ext},
+  include_package_data=True,
   ext_modules=cythonize(
     [
       Extension(

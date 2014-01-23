@@ -1,0 +1,6 @@
+include LICENSE
+include MANIFEST.in
+include ez_setup.py
+
+recursive-include src *
+recursive-include tests *
