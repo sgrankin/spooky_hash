@@ -1,3 +1,5 @@
+__version__ = '1.0.1'
+
 from libc.stdint cimport *
 from cython.operator import dereference
 import binascii
