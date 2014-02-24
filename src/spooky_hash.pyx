@@ -29,7 +29,7 @@ cpdef hash128_long(bytes message, uint64_t seed1=0, uint64_t seed2=0):
 
 cdef class _Hash:
   cdef _SpookyV2.SpookyHash __hash
-  cdef int __digest_size
+  cdef readonly int digest_size
 
   def __cinit__(_Hash self, *args, **kwargs):
     pass # def needed so that __cinit__ dispatch is fast for derived classes
@@ -41,7 +41,7 @@ cdef class _Hash:
   cpdef bytes digest(_Hash self):
     cdef uint64_t digest[2]
     self.__hash.Final(&digest[0], &digest[1])
-    return (<char*>digest)[:self.__digest_size]
+    return (<char*>digest)[:self.digest_size]
 
   cpdef str hexdigest(_Hash self):
     return binascii.hexlify(self.digest())
@@ -49,17 +49,13 @@ cdef class _Hash:
   cpdef copy(_Hash self):
     raise NotImplementedError()
 
-  property digest_size:
-    def __get__(_Hash self):
-      return self.__digest_size
-
   property block_size:
     def __get__(_Hash self):
       return 16
 
 cdef class Hash32(_Hash):
   def __cinit__(Hash32 self, bytes message=None, uint32_t seed=0):
-    self.__digest_size = 4
+    self.digest_size = 4
     self.__hash.Init(seed, seed)
     if message:
       self.__hash.Update(message, len(message))
@@ -76,7 +72,7 @@ cdef class Hash32(_Hash):
 
 cdef class Hash64(_Hash):
   def __cinit__(Hash64 self, bytes message=None, uint64_t seed=0):
-    self.__digest_size = 8
+    self.digest_size = 8
     self.__hash.Init(seed, seed)
     if message:
       self.__hash.Update(message, len(message))
@@ -93,7 +89,7 @@ cdef class Hash64(_Hash):
 
 cdef class Hash128(_Hash):
   def __cinit__(Hash128 self, bytes message=None, uint64_t seed1=0, uint64_t seed2=0):
-    self.__digest_size = 16
+    self.digest_size = 16
     self.__hash.Init(seed1, seed2)
     if message:
       self.__hash.Update(message, len(message))
